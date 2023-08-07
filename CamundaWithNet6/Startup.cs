@@ -1,4 +1,6 @@
-﻿using CamundaInstance.Api.Camunda;
+﻿using CamundaInstance.Camunda.Camunda.Contracts;
+using CamundaInstance.Camunda.Camunda.Core;
+using CamundaInstance.Camunda.Camunda.ExternalTasks;
 
 namespace CamundaInstance.Api
 {
@@ -17,9 +19,14 @@ namespace CamundaInstance.Api
         {
             services.AddControllers();
 
-            services.AddRouting(options => options.LowercaseUrls = true);
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen();
 
+            services.AddRouting(options => options.LowercaseUrls = true);
             services.Configure<CamundaSettings>(Configuration.GetSection("CamundaSettings"));
+            services.AddScoped<IEngineClient, EngineClient>();
+            services.AddScoped<ITaskPollingService, TaskPollingService>();
+            services.AddScoped<IExternalTaskExecutor, InsertIntoDB>();
 
         }
 
@@ -29,7 +36,8 @@ namespace CamundaInstance.Api
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
 
             app.UseHttpsRedirection();

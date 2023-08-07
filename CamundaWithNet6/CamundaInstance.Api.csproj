@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CamundaInstance.Domain\CamundaInstance.Domain.csproj" />
+    <ProjectReference Include="..\CamundaInstance.Camunda\CamundaInstance.Camunda.csproj" />
   </ItemGroup>
 
 </Project>

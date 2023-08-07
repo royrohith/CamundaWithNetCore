@@ -1,4 +1,5 @@
-﻿namespace CamundaInstance.Worker
+﻿
+namespace CamundaInstance.Worker
 {
     public class Startup
     {
@@ -17,8 +18,9 @@
 
             services.AddRouting(options => options.LowercaseUrls = true);
 
-            services.RegisterServices(Configuration);
-
+            ////services.RegisterServices(Configuration);
+            //services.Configure<CamundaSettings>(Configuration.GetSection("CamundaSettings"));
+            //services.AddScoped<IEngineClient, EngineClient>();
             services.AddHealthChecks();
         }
 

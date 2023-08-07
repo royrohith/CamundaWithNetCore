@@ -12,8 +12,8 @@ namespace CamundaInstance.Domain.Camunda
             var httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri(camundaSettings.Url);
             _camundaClient = CamundaClient.Create(httpClient);
-
         }
+
         public async Task StartProcessInstance(bool isDBEntryRequired)
         {
             var variables = new Dictionary<string, object>();

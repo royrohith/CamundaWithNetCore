@@ -1,4 +1,4 @@
-﻿namespace CamundaInstance.Api.Camunda
+﻿namespace CamundaInstance.Camunda.Camunda.Core
 {
     public class CamundaSettings
     {
