@@ -1,4 +1,6 @@
-﻿using CamundaInstance.Camunda.Camunda.Contracts;
+﻿using CamundaInstance.Api.Models;
+using CamundaInstance.Camunda.Camunda.Contracts;
+using CamundaInstance.Domain.Hasura.GraphQL.Variables;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CamundaWithNet6.Controllers
@@ -19,9 +21,9 @@ namespace CamundaWithNet6.Controllers
 
         [HttpPost]
         [Route("StartProcess")]
-        public async Task<ActionResult<bool>> Initialize(bool isDBEntryRequired)
+        public async Task<ActionResult<bool>> Initialize(AdminUserViewModel adminUser)
         {
-            await _engineClient.StartProcessInstance(isDBEntryRequired);
+            await _engineClient.StartProcessInstance(new AdminUser { Email = adminUser.Email, IsHasuraCallRequired= adminUser.IsHasuraCallRequired});
             return true;
         }
 

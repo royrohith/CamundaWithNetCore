@@ -1,6 +1,9 @@
 ﻿using CamundaInstance.Camunda.Camunda.Contracts;
 using CamundaInstance.Camunda.Camunda.Core;
 using CamundaInstance.Camunda.Camunda.ExternalTasks;
+using CamundaInstance.Domain.Hasura;
+using CamundaInstance.Domain.Hasura.Contracts;
+using CamundaInstance.Domain.Hasura.GraphQL;
 
 namespace CamundaInstance.Api
 {
@@ -24,8 +27,11 @@ namespace CamundaInstance.Api
 
             services.AddRouting(options => options.LowercaseUrls = true);
             services.Configure<CamundaSettings>(Configuration.GetSection("CamundaSettings"));
+            services.Configure<HasuraSettings>(Configuration.GetSection("HasuraSettings"));
             services.AddScoped<IEngineClient, EngineClient>();
             services.AddScoped<ITaskPollingService, TaskPollingService>();
+            services.AddScoped<IHasuraService, HasuraService>();
+            services.AddScoped<IGraphQLRepository, GraphQLRepository>();
             services.AddScoped<IExternalTaskExecutor, InsertIntoDB>();
 
         }

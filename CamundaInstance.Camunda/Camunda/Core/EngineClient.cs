@@ -4,6 +4,7 @@ using CamundaInstance.Camunda.Camunda.Contracts;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Options;
 using Camunda.Api.Client.ExternalTask;
+using CamundaInstance.Domain.Hasura.GraphQL.Variables;
 
 namespace CamundaInstance.Camunda.Camunda.Core
 {
@@ -23,10 +24,13 @@ namespace CamundaInstance.Camunda.Camunda.Core
             _externalTaskExecutors = externalTaskExecutors;
         }
 
-        public async Task StartProcessInstance(bool isDBEntryRequired)
+        public async Task StartProcessInstance(AdminUser adminUser)
         {
             var variables = new Dictionary<string, object>();
-            variables.Add("IsDBEntryRequired", isDBEntryRequired);
+
+            variables.Add("IsDBEntryRequired", adminUser.IsHasuraCallRequired);
+            variables.Add("Email", adminUser.Email);
+
             var startProcessInstance = new StartProcessInstance()
             {
                 BusinessKey = Guid.NewGuid().ToString(),
@@ -41,7 +45,11 @@ namespace CamundaInstance.Camunda.Camunda.Core
             try
             {
                 lockedExternalTasks = await _camundaClient.ExternalTasks.FetchAndLock(fetchExternalTasks);
-                lockedExternalTasks.ForEach(async lockedExternalTask => await ProcessLockedTask(fetchExternalTasks.WorkerId, lockedExternalTask));
+
+                lockedExternalTasks.ForEach(async lockedExternalTask => {
+                    if(!await ProcessLockedTask(fetchExternalTasks.WorkerId, lockedExternalTask))
+                        await UnlockExternalTasks(lockedExternalTasks);
+                });
             }
             catch (Exception ex)
             {
@@ -59,18 +67,15 @@ namespace CamundaInstance.Camunda.Camunda.Core
             }
         }
 
-        private async Task ProcessLockedTask(string workerId, LockedExternalTask lockedExternalTask)
+        private async Task<bool> ProcessLockedTask(string workerId, LockedExternalTask lockedExternalTask)
         {
             var executor = GetExecutor(lockedExternalTask.TopicName);
-            _ = await executor.Execute(lockedExternalTask);
+            var isSuccess = await executor.Execute(lockedExternalTask);
 
-            var completeExternalTask = new CompleteExternalTask()
-            {
-                WorkerId = workerId
-            };
-
-            await _camundaClient.ExternalTasks[lockedExternalTask.Id].Complete(completeExternalTask);
-
+            if (isSuccess)
+                await _camundaClient.ExternalTasks[lockedExternalTask.Id].Complete(new CompleteExternalTask() { WorkerId = workerId });
+            
+            return isSuccess;
         }
 
         private IExternalTaskExecutor GetExecutor(string topic) 

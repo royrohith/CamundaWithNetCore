@@ -5,7 +5,7 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CamundaInstance.Api", "CamundaWithNet6\CamundaInstance.Api.csproj", "{07104657-4CAE-4EA5-9267-D4D070A7AB6F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CamundaInstance.Camunda", "CamundaInstance.Camunda\CamundaInstance.Camunda.csproj", "{58FD8502-90CB-48F7-87CB-20828F74D256}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CamundaInstance.Domain", "CamundaInstance.Camunda\CamundaInstance.Domain.csproj", "{58FD8502-90CB-48F7-87CB-20828F74D256}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

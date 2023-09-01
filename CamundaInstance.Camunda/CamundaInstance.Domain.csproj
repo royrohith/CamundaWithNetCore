@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="Camunda.Api.Client" Version="2.6.0" />
+    <PackageReference Include="GraphQL.Client" Version="6.0.0" />
+    <PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
   </ItemGroup>
 
