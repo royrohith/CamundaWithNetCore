@@ -15,4 +15,9 @@
     <ProjectReference Include="..\CamundaInstance.Camunda\CamundaInstance.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Deployment\docker\" />
+    <Folder Include="Deployment\camunda\" />
+  </ItemGroup>
+
 </Project>
